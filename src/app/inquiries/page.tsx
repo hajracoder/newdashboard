@@ -279,7 +279,7 @@ export default function InquiryPage() {
 
   // Filtered + Sorted Inquiries
   const filteredInquiries = React.useMemo(() => {
-    let filtered = inquiries.filter((inq) => {
+    const filtered = inquiries.filter((inq) => {
       const matchesSearch =
         inq.contactPerson.toLowerCase().includes(searchTerm.toLowerCase()) ||
         inq.venue.toLowerCase().includes(searchTerm.toLowerCase());
