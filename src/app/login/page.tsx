@@ -53,12 +53,12 @@ export default function Login() {
           </button>
         </div>
 
-        <p className="mt-6 text-sm text-center text-gray-600 dark:text-gray-300">
-          Don't have an account?{" "}
-          <Link href="/signup" className="text-orange-400 font-semibold hover:underline">
-            Sign up
-          </Link>
-        </p>
+       <p className="mt-6 text-sm text-center text-gray-600 dark:text-gray-300">
+  Don&apos;t have an account?{" "}
+  <Link href="/signup" className="text-orange-400 font-semibold hover:underline">
+    Sign up
+  </Link>
+</p>
       </div>
     </div>
   )
