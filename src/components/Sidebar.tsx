@@ -7,12 +7,12 @@ export default function Sidebar({ showSidebar }: { showSidebar: boolean }) {
   if (!showSidebar) return null // agar off hai to sidebar hi na dikhaye
 
   return (
-    <aside className="w-64 bg-gray-50 dark:bg-gray-900 shadow-lg flex flex-col transition-all duration-300">
-      <div className="h-16 flex items-center justify-center font-semibold text-lg  dark:border-gray-700">
+    <aside className="w-64 max-h-full bg-gray-50 dark:bg-gray-900 shadow-lg flex flex-col transition-all duration-300">
+      <div className="h-16 flex items-center justify-center bold text-lg  dark:border-gray-700">
         Inquiry Managemet System
       </div>
 
-      <nav className="flex-1 p-4 space-y-2">
+      <nav className="flex-1 p-2 space-y-2">
         <Link href="/dashboard" className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
           <LayoutDashboard className="w-5 h-5" /> Dashboard
         </Link>
@@ -43,3 +43,9 @@ export default function Sidebar({ showSidebar }: { showSidebar: boolean }) {
     </aside>
   )
 }
+
+
+
+
+
+
