@@ -4,200 +4,287 @@
 
 
 
+// "use client"
 
+// import React, { useState, useEffect } from "react"
+// import { Plus, Edit, Trash2, MoreHorizontal, ChevronUp, ChevronDown, ListFilter, ChevronDown as ChevronDownIcon } from "lucide-react"
+// import { toast } from "sonner"
 
+// import { Button } from "@/components/ui/button"
+// import { Input } from "@/components/ui/input"
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+//   DropdownMenuCheckboxItem
+// } from "@/components/ui/dropdown-menu"
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table"
+// import { ChevronsLeftRight } from "lucide-react"
+// import {
+//   useReactTable,
+//   getCoreRowModel,
+//   getPaginationRowModel,
+//   ColumnDef,
+// } from "@tanstack/react-table"
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogDescription,
+//   DialogFooter
+// } from "@/components/ui/dialog"
 
-
-// "use client";
-
-// import React, { useState, useEffect } from "react";
-// import { Plus, Edit, Trash2, X, ChevronUp, ChevronDown } from "lucide-react";
-// import { toast } from "sonner";
+// import AddUser from "./adduser"
 
 // type User = {
-//   name: string;
-//   email: string;
-//   role: string;
-//   status: string;
-//   password: string;
-// };
+//   name: string
+//   email: string
+//   role: string
+//   status: string
+//   password: string
+// }
 
 // type SortConfig = {
-//   key: keyof User;
-//   direction: "asc" | "desc";
-// } | null;
+//   key: keyof User
+//   direction: "asc" | "desc"
+// } | null
 
 // export default function UserManagementPage() {
-//   const [users, setUsers] = useState<User[]>([]);
-//   const [mounted, setMounted] = useState(false); // For client-only rendering
+//   const [users, setUsers] = useState<User[]>([])
+//   const [mounted, setMounted] = useState(false)
 
-//   const [search, setSearch] = useState("");
-//   const [openModal, setOpenModal] = useState(false);
-//   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+//   const [search, setSearch] = useState("")
+//   const [roleFilter, setRoleFilter] = useState("")
+//   const [openModal, setOpenModal] = useState(false)
+//   const [editingIndex, setEditingIndex] = useState<number | null>(null)
 
-//   const [name, setName] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [role, setRole] = useState("admin");
-//   const [status, setStatus] = useState("Active");
-//   const [password, setPassword] = useState("");
-//   const [confirmPassword, setConfirmPassword] = useState("");
+//   const [name, setName] = useState("")
+//   const [email, setEmail] = useState("")
+//   const [role, setRole] = useState("admin")
+//   const [status, setStatus] = useState("Active")
+//   const [password, setPassword] = useState("")
+//   const [confirmPassword, setConfirmPassword] = useState("")
 
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const itemsPerPage = 5;
+//   const [currentPage, setCurrentPage] = useState(1)
+//   const itemsPerPage = 5
 
-//   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
+//   const [sortConfig, setSortConfig] = useState<SortConfig>(null)
 
-//   // Load data from localStorage on mount
+//   // confirmation modal state
+//   const [confirmOpen, setConfirmOpen] = useState(false)
+//   const [confirmMessage, setConfirmMessage] = useState("")
+//   const [confirmAction, setConfirmAction] = useState<null | (() => void)>(null)
+
+//   const askConfirmation = (message: string, action: () => void) => {
+//     setConfirmMessage(message)
+//     setConfirmAction(() => action)
+//     setConfirmOpen(true)
+//   }
+
 //   useEffect(() => {
-//     const saved = localStorage.getItem("users");
-//     if (saved) setUsers(JSON.parse(saved));
-//     setMounted(true);
-//   }, []);
+//     const saved = localStorage.getItem("users")
+//     if (saved) setUsers(JSON.parse(saved))
+//     setMounted(true)
+//   }, [])
 
-//   // Save data to localStorage whenever users change
 //   useEffect(() => {
-//     if (mounted) localStorage.setItem("users", JSON.stringify(users));
-//   }, [users, mounted]);
+//     if (mounted) localStorage.setItem("users", JSON.stringify(users))
+//   }, [users, mounted])
 
 //   const openEditModal = (index: number) => {
-//     const u = users[index];
-//     setName(u.name);
-//     setEmail(u.email);
-//     setRole(u.role);
-//     setStatus(u.status);
-//     setPassword(u.password);
-//     setConfirmPassword(u.password);
-//     setEditingIndex(index);
-//     setOpenModal(true);
-//   };
+//     const u = users[index]
+//     setName(u.name)
+//     setEmail(u.email)
+//     setRole(u.role)
+//     setStatus(u.status)
+//     setPassword(u.password)
+//     setConfirmPassword(u.password)
+//     setEditingIndex(index)
+//     setOpenModal(true)
+//   }
 
 //   const handleAddOrUpdate = () => {
 //     if (!name || !email || !role || !status || !password || !confirmPassword) {
-//       toast.error("All fields are required!");
-//       return;
+//       toast.error("All fields are required!")
+//       return
 //     }
 //     if (password !== confirmPassword) {
-//       toast.error("Passwords do not match!");
-//       return;
+//       toast.error("Passwords do not match!")
+//       return
 //     }
 
-//     const newUser: User = { name, email, role, status, password };
+//     const newUser: User = { name, email, role, status, password }
 
 //     if (editingIndex !== null) {
-//       const updated = [...users];
-//       updated[editingIndex] = newUser;
-//       setUsers(updated);
-//       toast.success("User updated!");
+//       const updated = [...users]
+//       updated[editingIndex] = newUser
+//       setUsers(updated)
+//       toast.success("User updated!")
 //     } else {
-//       setUsers([...users, newUser]);
-//       toast.success("User added!");
+//       setUsers([...users, newUser])
+//       toast.success("User added!")
 //     }
 
-//     setName("");
-//     setEmail("");
-//     setRole("admin");
-//     setStatus("Active");
-//     setPassword("");
-//     setConfirmPassword("");
-//     setEditingIndex(null);
-//     setOpenModal(false);
-//   };
+//     setName("")
+//     setEmail("")
+//     setRole("admin")
+//     setStatus("Active")
+//     setPassword("")
+//     setConfirmPassword("")
+//     setEditingIndex(null)
+//     setOpenModal(false)
+//   }
 
 //   const handleDelete = (index: number) => {
-//     if (confirm("Are you sure you want to delete this user?")) {
-//       const updated = users.filter((_, i) => i !== index);
-//       setUsers(updated);
-//       toast.success("User deleted!");
-//     }
-//   };
+//     const updated = users.filter((_, i) => i !== index)
+//     setUsers(updated)
+//     toast.success("User deleted!")
+//   }
 
 //   const handleSort = (key: keyof User) => {
-//     let direction: "asc" | "desc" = "asc";
+//     let direction: "asc" | "desc" = "asc"
 //     if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
-//       direction = "desc";
+//       direction = "desc"
 //     }
-//     setSortConfig({ key, direction });
-//   };
+//     setSortConfig({ key, direction })
+//   }
 
 //   const sortedUsers = React.useMemo(() => {
-//     if (!sortConfig) return users;
-//     const { key, direction } = sortConfig;
+//     if (!sortConfig) return users
+//     const { key, direction } = sortConfig
 //     return [...users].sort((a, b) => {
-//       const aVal = a[key].toLowerCase();
-//       const bVal = b[key].toLowerCase();
-//       if (aVal < bVal) return direction === "asc" ? -1 : 1;
-//       if (aVal > bVal) return direction === "asc" ? 1 : -1;
-//       return 0;
-//     });
-//   }, [users, sortConfig]);
+//       const aVal = a[key].toLowerCase()
+//       const bVal = b[key].toLowerCase()
+//       if (aVal < bVal) return direction === "asc" ? -1 : 1
+//       if (aVal > bVal) return direction === "asc" ? 1 : -1
+//       return 0
+//     })
+//   }, [users, sortConfig])
 
-//   const filteredUsers = sortedUsers.filter((u) =>
-//     u.name.toLowerCase().includes(search.toLowerCase())
-//   );
+//   const filteredUsers = sortedUsers.filter(
+//     (u) =>
+//       u.name.toLowerCase().includes(search.toLowerCase()) &&
+//       (roleFilter === "" || u.role === roleFilter)
+//   )
 
-//   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+//   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage)
 //   const paginatedUsers = filteredUsers.slice(
 //     (currentPage - 1) * itemsPerPage,
 //     currentPage * itemsPerPage
-//   );
+//   )
 
 //   const renderSortIcon = (key: keyof User) => {
 //     if (!sortConfig || sortConfig.key !== key)
-//       return <ChevronUp className="w-3 h-3 opacity-50 inline-block" />;
+//       return <ChevronUp className="w-3 h-3 opacity-50 inline-block" />
 //     return sortConfig.direction === "asc" ? (
 //       <ChevronUp className="w-3 h-3 inline-block" />
 //     ) : (
 //       <ChevronDown className="w-3 h-3 inline-block" />
-//     );
-//   };
+//     )
+//   }
+
+//   const columns: ColumnDef<User>[] = [
+//     { accessorKey: "name", header: "Name" },
+//     { accessorKey: "email", header: "Email" },
+//     { accessorKey: "role", header: "Role" },
+//     { accessorKey: "status", header: "Status" },
+//   ]
+
+//   const table = useReactTable({
+//     data: users,
+//     columns,
+//     getCoreRowModel: getCoreRowModel(),
+//     getPaginationRowModel: getPaginationRowModel(),
+//   })
 
 //   return (
 //     <div className="p-6 bg-white rounded-lg">
-//       <div className="flex justify-between items-center mb-6">
-//         <h1 className="text-2xl font-bold">User Management</h1>
-//         <button
-//           onClick={() => setOpenModal(true)}
-//           className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
-//         >
-//           <Plus className="w-4 h-4" /> Add User
-//         </button>
-//       </div>
+//       <h1 className="text-2xl font-bold">User Management</h1>
 
-//       <input
-//         type="text"
-//         placeholder="Search by name..."
-//         className="w-full p-2 border rounded-lg mb-4"
-//         value={search}
-//         onChange={(e) => setSearch(e.target.value)}
-//       />
+//       <div className="flex items-center py-4 gap-2">
+//         {/* ✅ Search input (smaller width) */}
+//         <Input
+//           placeholder="Search by name"
+//           value={search}
+//           onChange={(event) => setSearch(event.target.value)}
+//           className="max-w-xs"
+//         />
+
+//         {/* ✅ Role Filter */}
+//         <DropdownMenu>
+//           <DropdownMenuTrigger asChild>
+//             <Button variant="outline">
+//               {roleFilter ? roleFilter : "All Roles"} <ChevronDownIcon className="ml-2 h-4 w-4" />
+//             </Button>
+//           </DropdownMenuTrigger>
+//           <DropdownMenuContent align="end">
+//             <DropdownMenuItem onClick={() => setRoleFilter("")}>All</DropdownMenuItem>
+//             <DropdownMenuItem onClick={() => setRoleFilter("admin")}>Admin</DropdownMenuItem>
+//             <DropdownMenuItem onClick={() => setRoleFilter("sales")}>Sales</DropdownMenuItem>
+//             <DropdownMenuItem onClick={() => setRoleFilter("owner")}>Owner</DropdownMenuItem>
+//           </DropdownMenuContent>
+//         </DropdownMenu>
+
+//         {/* Column Visibility */}
+//         <DropdownMenu>
+//           <DropdownMenuTrigger asChild>
+//             <Button variant="outline" className="ml-auto">
+//               <ListFilter className="ml-2 h-4 w-4" /> View
+//             </Button>
+//           </DropdownMenuTrigger>
+//           <DropdownMenuContent align="end">
+//             {table.getAllColumns().map((column: any) => (
+//               <DropdownMenuCheckboxItem
+//                 key={column.id}
+//                 className="capitalize"
+//                 checked={column.getIsVisible()}
+//                 onCheckedChange={(value: any) => column.toggleVisibility(!!value)}
+//               >
+//                 {column.id}
+//               </DropdownMenuCheckboxItem>
+//             ))}
+//           </DropdownMenuContent>
+//         </DropdownMenu>
+
+//         <AddUser />
+//       </div>
 
 //       {mounted && (
 //         <div className="overflow-x-auto">
-//           <table className="min-w-full rounded-lg">
-//             <thead className="border-b">
-//               <tr>
+//           <Table>
+//             <TableHeader>
+//               <TableRow>
 //                 {["name", "email", "role", "status"].map((key) => (
-//                   <th
+//                   <TableHead
 //                     key={key}
-//                     className="p-2 cursor-pointer select-none"
+//                     className="cursor-pointer select-none"
 //                     onClick={() => handleSort(key as keyof User)}
 //                   >
-//                     <div className="flex text-left gap-1">
+//                     <div className="flex items-center gap-1">
 //                       {key.charAt(0).toUpperCase() + key.slice(1)}
 //                       {renderSortIcon(key as keyof User)}
 //                     </div>
-//                   </th>
+//                   </TableHead>
 //                 ))}
-//                 <th className="p-2">Actions</th>
-//               </tr>
-//             </thead>
-//             <tbody>
+//                 <TableHead>Actions</TableHead>
+//               </TableRow>
+//             </TableHeader>
+//             <TableBody>
 //               {paginatedUsers.map((user, i) => (
-//                 <tr key={i} className="text-left">
-//                   <td className="p-2">{user.name}</td>
-//                   <td className="p-2">{user.email}</td>
-//                   <td className="p-2">{user.role}</td>
-//                   <td className="p-2">
+//                 <TableRow key={i}>
+//                   <TableCell>{user.name}</TableCell>
+//                   <TableCell>{user.email}</TableCell>
+//                   <TableCell>{user.role}</TableCell>
+//                   <TableCell>
 //                     <span
 //                       className={`px-2 py-1 rounded text-white text-sm ${
 //                         user.status.toLowerCase() === "active"
@@ -207,142 +294,105 @@
 //                     >
 //                       {user.status}
 //                     </span>
-//                   </td>
-//                   <td className="p-2 flex justify-center gap-2">
-//                     <button
-//                       onClick={() => openEditModal((currentPage - 1) * itemsPerPage + i)}
-//                       className="border rounded-lg p-2 hover:bg-gray-100"
-//                     >
-//                       <Edit className="w-5 h-5" />
-//                     </button>
-//                     <button
-//                       onClick={() => handleDelete((currentPage - 1) * itemsPerPage + i)}
-//                       className="border rounded-lg p-2 hover:bg-gray-100"
-//                     >
-//                       <Trash2 className="w-5 h-5" />
-//                     </button>
-//                   </td>
-//                 </tr>
+//                   </TableCell>
+//                   <TableCell>
+//                     <DropdownMenu>
+//                       <DropdownMenuTrigger asChild>
+//                         <Button variant="ghost" size="icon">
+//                           <MoreHorizontal className="w-5 h-5" />
+//                         </Button>
+//                       </DropdownMenuTrigger>
+//                       <DropdownMenuContent align="end">
+//                         <DropdownMenuItem
+//                           onClick={() =>
+//                             askConfirmation("Edit this user?", () =>
+//                               openEditModal((currentPage - 1) * itemsPerPage + i)
+//                             )
+//                           }
+//                         >
+//                           <Edit className="w-4 h-4 mr-2" /> Edit
+//                         </DropdownMenuItem>
+//                         <DropdownMenuItem
+//                           className="text-red-500"
+//                           onClick={() =>
+//                             askConfirmation("Delete this user?", () =>
+//                               handleDelete((currentPage - 1) * itemsPerPage + i)
+//                             )
+//                           }
+//                         >
+//                           <Trash2 className="w-4 h-4 mr-2" /> Delete
+//                         </DropdownMenuItem>
+//                       </DropdownMenuContent>
+//                     </DropdownMenu>
+//                   </TableCell>
+//                 </TableRow>
 //               ))}
 //               {paginatedUsers.length === 0 && (
-//                 <tr>
-//                   <td colSpan={5} className="text-center p-4 text-gray-500">
+//                 <TableRow>
+//                   <TableCell colSpan={5} className="text-center p-4 text-gray-500">
 //                     No users found.
-//                   </td>
-//                 </tr>
+//                   </TableCell>
+//                 </TableRow>
 //               )}
-//             </tbody>
-//           </table>
+//             </TableBody>
+//           </Table>
 
 //           {/* Pagination */}
 //           <div className="flex justify-between items-center mt-4">
-//             <button
+//             <Button
+//               variant="outline"
 //               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-//               className="px-3 py-1 border rounded-lg hover:bg-gray-100"
 //             >
 //               Previous
-//             </button>
+//             </Button>
 //             <span>
 //               Page {currentPage} of {totalPages || 1}
 //             </span>
-//             <button
-//               onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-//               className="px-3 py-1 border rounded-lg hover:bg-gray-100"
+//             <Button
+//               variant="outline"
+//               onClick={() =>
+//                 setCurrentPage((p) => Math.min(p + 1, totalPages))
+//               }
 //             >
 //               Next
-//             </button>
+//             </Button>
 //           </div>
 //         </div>
 //       )}
 
-//       {/* Right Slide Modal */}
-//       {openModal && (
-//         <div className="fixed inset-0 z-50 flex">
-//           <div
-//             className="fixed inset-0 bg-black/50"
-//             onClick={() => setOpenModal(false)}
-//           ></div>
-//           <div className="ml-auto h-full w-[350px] bg-white shadow-lg p-6 overflow-y-auto relative transition-transform transform translate-x-0">
-//             <div className="flex justify-between items-center mb-4">
-//               <h2 className="text-xl font-bold">
-//                 {editingIndex !== null ? "Edit User" : "Add User"}
-//               </h2>
-//               <button onClick={() => setOpenModal(false)}>
-//                 <X className="w-5 h-5" />
-//               </button>
-//             </div>
-//             <p className="text-gray-600 mb-4">
-//               {editingIndex !== null
-//                 ? "Edit the user details"
-//                 : "You have to add user"}
-//             </p>
-
-//             <input
-//               type="text"
-//               placeholder="Name"
-//               className="w-full p-2 border rounded-lg mb-3"
-//               value={name}
-//               onChange={(e) => setName(e.target.value)}
-//             />
-//             <input
-//               type="email"
-//               placeholder="Email"
-//               className="w-full p-2 border rounded-lg mb-3"
-//               value={email}
-//               onChange={(e) => setEmail(e.target.value)}
-//             />
-//             <select
-//               className="w-full p-2 border rounded-lg mb-3"
-//               value={role}
-//               onChange={(e) => setRole(e.target.value)}
+//       {/* Confirmation Modal */}
+//       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+//         <DialogContent>
+//           <DialogHeader>
+//             <DialogTitle>Are you sure?</DialogTitle>
+//             <DialogDescription>{confirmMessage}</DialogDescription>
+//           </DialogHeader>
+//           <DialogFooter>
+//             <Button variant="outline" onClick={() => setConfirmOpen(false)}>
+//               Cancel
+//             </Button>
+//             <Button
+//               variant="destructive"
+//               onClick={() => {
+//                 if (confirmAction) confirmAction()
+//                 setConfirmOpen(false)
+//               }}
 //             >
-//               <option value="admin">Admin</option>
-//               <option value="owner">Owner</option>
-//               <option value="sales">Sales</option>
-//             </select>
-//             <select
-//               className="w-full p-2 border rounded-lg mb-3"
-//               value={status}
-//               onChange={(e) => setStatus(e.target.value)}
-//             >
-//               <option value="Active">Active</option>
-//               <option value="Inactive">Inactive</option>
-//             </select>
-//             <input
-//               type="password"
-//               placeholder="Password"
-//               className="w-full p-2 border rounded-lg mb-3"
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//             />
-//             <input
-//               type="password"
-//               placeholder="Confirm Password"
-//               className="w-full p-2 border rounded-lg mb-3"
-//               value={confirmPassword}
-//               onChange={(e) => setConfirmPassword(e.target.value)}
-//             />
-
-//             <div className="flex justify-end gap-3 mt-4">
-//               <button
-//                 onClick={handleAddOrUpdate}
-//                 className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
-//               >
-//                 {editingIndex !== null ? "Update User" : "Add User"}
-//               </button>
-//               <button
-//                 onClick={() => setOpenModal(false)}
-//                 className="px-4 py-2 border rounded-lg hover:bg-gray-100"
-//               >
-//                 Close
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       )}
+//               Confirm
+//             </Button>
+//           </DialogFooter>
+//         </DialogContent>
+//       </Dialog>
 //     </div>
-//   );
+//   )
 // }
+
+
+
+
+
+
+
 
 
 
@@ -353,18 +403,18 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Plus, Edit, Trash2, X, ChevronUp, ChevronDown } from "lucide-react"
+import { Plus, Edit, Trash2, MoreHorizontal, ChevronUp, ChevronDown, ListFilter, ChevronDown as ChevronDownIcon, ChevronsUpDownIcon } from "lucide-react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem
+} from "@/components/ui/dropdown-menu"
 import {
   Table,
   TableBody,
@@ -373,6 +423,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  ColumnDef,
+} from "@tanstack/react-table"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+import AddUser from "./adduser"
 
 type User = {
   name: string
@@ -392,6 +465,7 @@ export default function UserManagementPage() {
   const [mounted, setMounted] = useState(false)
 
   const [search, setSearch] = useState("")
+  const [roleFilter, setRoleFilter] = useState("")
   const [openModal, setOpenModal] = useState(false)
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
 
@@ -403,9 +477,20 @@ export default function UserManagementPage() {
   const [confirmPassword, setConfirmPassword] = useState("")
 
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const [rowsPerPage, setRowsPerPage] = useState(10)
 
   const [sortConfig, setSortConfig] = useState<SortConfig>(null)
+
+  // confirmation modal state
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [confirmMessage, setConfirmMessage] = useState("")
+  const [confirmAction, setConfirmAction] = useState<null | (() => void)>(null)
+
+  const askConfirmation = (message: string, action: () => void) => {
+    setConfirmMessage(message)
+    setConfirmAction(() => action)
+    setConfirmOpen(true)
+  }
 
   useEffect(() => {
     const saved = localStorage.getItem("users")
@@ -428,6 +513,7 @@ export default function UserManagementPage() {
     setEditingIndex(index)
     setOpenModal(true)
   }
+
 
   const handleAddOrUpdate = () => {
     if (!name || !email || !role || !status || !password || !confirmPassword) {
@@ -462,11 +548,9 @@ export default function UserManagementPage() {
   }
 
   const handleDelete = (index: number) => {
-    if (confirm("Are you sure you want to delete this user?")) {
-      const updated = users.filter((_, i) => i !== index)
-      setUsers(updated)
-      toast.success("User deleted!")
-    }
+    const updated = users.filter((_, i) => i !== index)
+    setUsers(updated)
+    toast.success("User deleted!")
   }
 
   const handleSort = (key: keyof User) => {
@@ -489,42 +573,104 @@ export default function UserManagementPage() {
     })
   }, [users, sortConfig])
 
-  const filteredUsers = sortedUsers.filter((u) =>
-    u.name.toLowerCase().includes(search.toLowerCase())
+  const filteredUsers = sortedUsers.filter(
+    (u) =>
+      u.name.toLowerCase().includes(search.toLowerCase()) &&
+      (roleFilter === "" || u.role === roleFilter)
   )
 
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage)
+  const totalPages = Math.ceil(filteredUsers.length / rowsPerPage)
+
   const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
   )
 
-  const renderSortIcon = (key: keyof User) => {
-    if (!sortConfig || sortConfig.key !== key)
-      return <ChevronUp className="w-3 h-3 opacity-50 inline-block" />
-    return sortConfig.direction === "asc" ? (
-      <ChevronUp className="w-3 h-3 inline-block" />
-    ) : (
-      <ChevronDown className="w-3 h-3 inline-block" />
-    )
-  }
+const renderSortIcon = (key: keyof User) => {
+  const isSorted = sortConfig?.key === key
+  const direction = sortConfig?.direction
+
+  return (
+    <div className="ml-2 h-4 w-4 relative inline-block">
+      {/* Base unsorted icon */}
+      <ChevronsUpDownIcon
+        className={`h-4 w-4 ${isSorted ? "opacity-0" : "opacity-50"}`}
+      />
+
+      {/* Sorted icon */}
+      {isSorted && direction === "asc" && (
+        <ChevronUp className="h-4 w-4 absolute top-0 left-0" />
+      )}
+      {isSorted && direction === "desc" && (
+        <ChevronDown className="h-4 w-4 absolute top-0 left-0" />
+      )}
+    </div>
+  )
+}
+
+
+  const columns: ColumnDef<User>[] = [
+    { accessorKey: "name", header: "Name" },
+    { accessorKey: "email", header: "Email" },
+    { accessorKey: "role", header: "Role" },
+    { accessorKey: "status", header: "Status" },
+  ]
+
+  const table = useReactTable({
+    data: users,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  })
 
   return (
     <div className="p-6 bg-white rounded-lg">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">User Management</h1>
-        <Button onClick={() => setOpenModal(true)} className="bg-orange-600 hover:bg-orange-700">
-          <Plus className="w-4 h-4 mr-2" /> Add User
-        </Button>
-      </div>
+      <h1 className="text-2xl font-bold">User Management</h1>
 
-      <Input
-        type="text"
-        placeholder="Search by name..."
-        className="mb-4"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="flex items-center py-4 gap-2">
+        <Input
+          placeholder="Search by name"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          className="max-w-xs"
+        />
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">
+              {roleFilter ? roleFilter : "All Roles"} <ChevronsUpDownIcon className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setRoleFilter("")}>All</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setRoleFilter("admin")}>Admin</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setRoleFilter("sales")}>Sales</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setRoleFilter("owner")}>Owner</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              <ListFilter className="ml-2 h-4 w-4" /> View
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table.getAllColumns().map((column: any) => (
+              <DropdownMenuCheckboxItem
+                key={column.id}
+                className="capitalize"
+                checked={column.getIsVisible()}
+                onCheckedChange={(value: any) => column.toggleVisibility(!!value)}
+              >
+                {column.id}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <AddUser />
+      </div>
 
       {mounted && (
         <div className="overflow-x-auto">
@@ -537,10 +683,10 @@ export default function UserManagementPage() {
                     className="cursor-pointer select-none"
                     onClick={() => handleSort(key as keyof User)}
                   >
-                    <div className="flex items-center gap-1">
-                      {key.charAt(0).toUpperCase() + key.slice(1)}
-                      {renderSortIcon(key as keyof User)}
-                    </div>
+                  <div className="flex items-center gap-1">
+  {key.charAt(0).toUpperCase() + key.slice(1)}
+  {renderSortIcon(key as keyof User)}
+</div>
                   </TableHead>
                 ))}
                 <TableHead>Actions</TableHead>
@@ -563,25 +709,35 @@ export default function UserManagementPage() {
                       {user.status}
                     </span>
                   </TableCell>
-                  <TableCell className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() =>
-                        openEditModal((currentPage - 1) * itemsPerPage + i)
-                      }
-                    >
-                      <Edit className="w-5 h-5" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() =>
-                        handleDelete((currentPage - 1) * itemsPerPage + i)
-                      }
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </Button>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreHorizontal className="w-5 h-5" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() =>
+                            askConfirmation("Edit this user?", () =>
+                              openEditModal((currentPage - 1) * rowsPerPage + i)
+                            )
+                          }
+                        >
+                          <Edit className="w-4 h-4 mr-2" /> Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-red-500"
+                          onClick={() =>
+                            askConfirmation("Delete this user?", () =>
+                              handleDelete((currentPage - 1) * rowsPerPage + i)
+                            )
+                          }
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
               ))}
@@ -596,108 +752,75 @@ export default function UserManagementPage() {
           </Table>
 
           {/* Pagination */}
-          <div className="flex justify-between items-center mt-4">
-            <Button
-              variant="outline"
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-            >
-              Previous
-            </Button>
-            <span>
-              Page {currentPage} of {totalPages || 1}
-            </span>
-            <Button
-              variant="outline"
-              onClick={() =>
-                setCurrentPage((p) => Math.min(p + 1, totalPages))
-              }
-            >
-              Next
-            </Button>
-          </div>
-        </div>
-      )}
+          <div className="flex justify-between items-center mt-4 w-full">
+            <div className="flex items-center gap-4">
+            
+              <Select
+                value={rowsPerPage.toString()}
+                onValueChange={(val) => {
+                  setRowsPerPage(Number(val))
+                  setCurrentPage(1) // reset page on rows change
+                }}
+              >
+                <SelectTrigger className="w-24">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {[10, 20, 30, 40, 50].map((num) => (
+                    <SelectItem key={num} value={num.toString()}>
+                      {num}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-      {/* Right Slide Modal */}
-      {openModal && (
-        <div className="fixed inset-0 z-50 flex">
-          <div
-            className="fixed inset-0 bg-black/50"
-            onClick={() => setOpenModal(false)}
-          ></div>
-          <div className="ml-auto h-full w-[350px] bg-white shadow-lg p-6 overflow-y-auto relative">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">
-                {editingIndex !== null ? "Edit User" : "Add User"}
-              </h2>
-              <Button variant="ghost" size="icon" onClick={() => setOpenModal(false)}>
-                <X className="w-5 h-5" />
-              </Button>
+              <span className="text-sm">
+                Page {currentPage} of {totalPages || 1}
+              </span>
             </div>
-            <p className="text-gray-600 mb-4">
-              {editingIndex !== null
-                ? "Edit the user details"
-                : "You have to add user"}
-            </p>
 
-            <Input
-              placeholder="Name"
-              className="mb-3"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <Input
-              type="email"
-              placeholder="Email"
-              className="mb-3"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Select value={role} onValueChange={setRole}>
-              <SelectTrigger className="mb-3">
-                <SelectValue placeholder="Select Role" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="admin">Admin</SelectItem>
-                <SelectItem value="owner">Owner</SelectItem>
-                <SelectItem value="sales">Sales</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger className="mb-3">
-                <SelectValue placeholder="Select Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Inactive">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
-            <Input
-              type="password"
-              placeholder="Password"
-              className="mb-3"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Input
-              type="password"
-              placeholder="Confirm Password"
-              className="mb-3"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-
-            <div className="flex justify-end gap-3 mt-4">
-              <Button onClick={handleAddOrUpdate} className="bg-orange-600 hover:bg-orange-700">
-                {editingIndex !== null ? "Update User" : "Add User"}
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
               </Button>
-              <Button variant="outline" onClick={() => setOpenModal(false)}>
-                Close
+              <Button
+                variant="outline"
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                disabled={currentPage === totalPages || totalPages === 0}
+              >
+                Next
               </Button>
             </div>
           </div>
         </div>
       )}
+
+      <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogDescription>{confirmMessage}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirmOpen(false)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => {
+                if (confirmAction) confirmAction()
+                setConfirmOpen(false)
+              }}
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
