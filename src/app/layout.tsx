@@ -1,3 +1,7 @@
+
+
+
+
 "use client"
 
 import "./globals.css"
@@ -8,10 +12,9 @@ import { Toaster } from "sonner"
 import { usePathname } from "next/navigation"
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [showSidebar, setShowSidebar] = useState(true)
+  const [showSidebar, setShowSidebar] = useState(true) // desktop default open
   const pathname = usePathname()
 
-  // login/signup page me sidebar/topbar hide
   const authPages = ["/login", "/signup"]
   const isAuthPage = authPages.includes(pathname)
 
@@ -24,12 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
         ) : (
           <div className="flex h-full">
-            <Sidebar showSidebar={showSidebar} />
-            <div className="flex flex-col flex-1">
-              <Topbar
-                showSidebar={showSidebar}
-                onToggleSidebar={() => setShowSidebar(!showSidebar)}
-              />
+            <Sidebar showSidebar={showSidebar} onCloseSidebar={() => setShowSidebar(false)} />
+            <div className={`flex flex-col flex-1 transition-all duration-300 ${showSidebar ? "md:ml-64" : "md:ml-0"}`}>
+              <Topbar showSidebar={showSidebar} onToggleSidebar={() => setShowSidebar(!showSidebar)} />
               <main className="flex-1 bg-gray-50 dark:bg-gray-800 overflow-y-auto">
                 {children}
               </main>

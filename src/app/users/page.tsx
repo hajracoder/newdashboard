@@ -4,10 +4,30 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // "use client"
 
 // import React, { useState, useEffect } from "react"
-// import { Plus, Edit, Trash2, MoreHorizontal, ChevronUp, ChevronDown, ListFilter, ChevronDown as ChevronDownIcon } from "lucide-react"
+// import { Edit, Trash2, MoreHorizontal, ChevronUp, ChevronDown, ListFilter, ChevronsUpDownIcon } from "lucide-react"
 // import { toast } from "sonner"
 
 // import { Button } from "@/components/ui/button"
@@ -27,7 +47,6 @@
 //   TableHeader,
 //   TableRow,
 // } from "@/components/ui/table"
-// import { ChevronsLeftRight } from "lucide-react"
 // import {
 //   useReactTable,
 //   getCoreRowModel,
@@ -42,6 +61,13 @@
 //   DialogDescription,
 //   DialogFooter
 // } from "@/components/ui/dialog"
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select"
 
 // import AddUser from "./adduser"
 
@@ -52,6 +78,8 @@
 //   status: string
 //   password: string
 // }
+
+
 
 // type SortConfig = {
 //   key: keyof User
@@ -64,7 +92,6 @@
 
 //   const [search, setSearch] = useState("")
 //   const [roleFilter, setRoleFilter] = useState("")
-//   const [openModal, setOpenModal] = useState(false)
 //   const [editingIndex, setEditingIndex] = useState<number | null>(null)
 
 //   const [name, setName] = useState("")
@@ -75,7 +102,7 @@
 //   const [confirmPassword, setConfirmPassword] = useState("")
 
 //   const [currentPage, setCurrentPage] = useState(1)
-//   const itemsPerPage = 5
+//   const [rowsPerPage, setRowsPerPage] = useState(10)
 
 //   const [sortConfig, setSortConfig] = useState<SortConfig>(null)
 
@@ -109,45 +136,7 @@
 //     setPassword(u.password)
 //     setConfirmPassword(u.password)
 //     setEditingIndex(index)
-//     setOpenModal(true)
-//   }
-
-//   const handleAddOrUpdate = () => {
-//     if (!name || !email || !role || !status || !password || !confirmPassword) {
-//       toast.error("All fields are required!")
-//       return
-//     }
-//     if (password !== confirmPassword) {
-//       toast.error("Passwords do not match!")
-//       return
-//     }
-
-//     const newUser: User = { name, email, role, status, password }
-
-//     if (editingIndex !== null) {
-//       const updated = [...users]
-//       updated[editingIndex] = newUser
-//       setUsers(updated)
-//       toast.success("User updated!")
-//     } else {
-//       setUsers([...users, newUser])
-//       toast.success("User added!")
-//     }
-
-//     setName("")
-//     setEmail("")
-//     setRole("admin")
-//     setStatus("Active")
-//     setPassword("")
-//     setConfirmPassword("")
-//     setEditingIndex(null)
-//     setOpenModal(false)
-//   }
-
-//   const handleDelete = (index: number) => {
-//     const updated = users.filter((_, i) => i !== index)
-//     setUsers(updated)
-//     toast.success("User deleted!")
+//     document.getElementById("open-add-user-modal")?.click() // trigger AddUser modal
 //   }
 
 //   const handleSort = (key: keyof User) => {
@@ -157,6 +146,13 @@
 //     }
 //     setSortConfig({ key, direction })
 //   }
+
+//   const handleDelete = (index: number) => {
+//   const updated = users.filter((_, i) => i !== index)
+//   setUsers(updated)
+//   toast.success("User deleted!")
+// }
+
 
 //   const sortedUsers = React.useMemo(() => {
 //     if (!sortConfig) return users
@@ -176,19 +172,23 @@
 //       (roleFilter === "" || u.role === roleFilter)
 //   )
 
-//   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage)
+//   const totalPages = Math.ceil(filteredUsers.length / rowsPerPage)
+
 //   const paginatedUsers = filteredUsers.slice(
-//     (currentPage - 1) * itemsPerPage,
-//     currentPage * itemsPerPage
+//     (currentPage - 1) * rowsPerPage,
+//     currentPage * rowsPerPage
 //   )
 
 //   const renderSortIcon = (key: keyof User) => {
-//     if (!sortConfig || sortConfig.key !== key)
-//       return <ChevronUp className="w-3 h-3 opacity-50 inline-block" />
-//     return sortConfig.direction === "asc" ? (
-//       <ChevronUp className="w-3 h-3 inline-block" />
-//     ) : (
-//       <ChevronDown className="w-3 h-3 inline-block" />
+//     const isSorted = sortConfig?.key === key
+//     const direction = sortConfig?.direction
+
+//     return (
+//       <div className="ml-2 h-4 w-4 relative inline-block">
+//         <ChevronsUpDownIcon className={`h-4 w-4 ${isSorted ? "opacity-0" : "opacity-50"}`} />
+//         {isSorted && direction === "asc" && <ChevronUp className="h-4 w-4 absolute top-0 left-0" />}
+//         {isSorted && direction === "desc" && <ChevronDown className="h-4 w-4 absolute top-0 left-0" />}
+//       </div>
 //     )
 //   }
 
@@ -211,7 +211,6 @@
 //       <h1 className="text-2xl font-bold">User Management</h1>
 
 //       <div className="flex items-center py-4 gap-2">
-//         {/* ✅ Search input (smaller width) */}
 //         <Input
 //           placeholder="Search by name"
 //           value={search}
@@ -219,11 +218,10 @@
 //           className="max-w-xs"
 //         />
 
-//         {/* ✅ Role Filter */}
 //         <DropdownMenu>
 //           <DropdownMenuTrigger asChild>
 //             <Button variant="outline">
-//               {roleFilter ? roleFilter : "All Roles"} <ChevronDownIcon className="ml-2 h-4 w-4" />
+//               {roleFilter || "All Roles"} <ChevronsUpDownIcon className="ml-2 h-4 w-4" />
 //             </Button>
 //           </DropdownMenuTrigger>
 //           <DropdownMenuContent align="end">
@@ -234,7 +232,6 @@
 //           </DropdownMenuContent>
 //         </DropdownMenu>
 
-//         {/* Column Visibility */}
 //         <DropdownMenu>
 //           <DropdownMenuTrigger asChild>
 //             <Button variant="outline" className="ml-auto">
@@ -242,12 +239,12 @@
 //             </Button>
 //           </DropdownMenuTrigger>
 //           <DropdownMenuContent align="end">
-//             {table.getAllColumns().map((column: any) => (
+//             {table.getAllColumns().map((column) => (
 //               <DropdownMenuCheckboxItem
 //                 key={column.id}
 //                 className="capitalize"
 //                 checked={column.getIsVisible()}
-//                 onCheckedChange={(value: any) => column.toggleVisibility(!!value)}
+//                 onCheckedChange={(value) => column.toggleVisibility(!!value)}
 //               >
 //                 {column.id}
 //               </DropdownMenuCheckboxItem>
@@ -255,7 +252,8 @@
 //           </DropdownMenuContent>
 //         </DropdownMenu>
 
-//         <AddUser />
+//         <AddUser  />
+
 //       </div>
 
 //       {mounted && (
@@ -264,11 +262,7 @@
 //             <TableHeader>
 //               <TableRow>
 //                 {["name", "email", "role", "status"].map((key) => (
-//                   <TableHead
-//                     key={key}
-//                     className="cursor-pointer select-none"
-//                     onClick={() => handleSort(key as keyof User)}
-//                   >
+//                   <TableHead key={key} className="cursor-pointer select-none" onClick={() => handleSort(key as keyof User)}>
 //                     <div className="flex items-center gap-1">
 //                       {key.charAt(0).toUpperCase() + key.slice(1)}
 //                       {renderSortIcon(key as keyof User)}
@@ -285,13 +279,7 @@
 //                   <TableCell>{user.email}</TableCell>
 //                   <TableCell>{user.role}</TableCell>
 //                   <TableCell>
-//                     <span
-//                       className={`px-2 py-1 rounded text-white text-sm ${
-//                         user.status.toLowerCase() === "active"
-//                           ? "bg-green-500"
-//                           : "bg-gray-400"
-//                       }`}
-//                     >
+//                     <span className={`px-2 py-1 rounded text-white text-sm ${user.status.toLowerCase() === "active" ? "bg-green-500" : "bg-gray-400"}`}>
 //                       {user.status}
 //                     </span>
 //                   </TableCell>
@@ -303,23 +291,18 @@
 //                         </Button>
 //                       </DropdownMenuTrigger>
 //                       <DropdownMenuContent align="end">
-//                         <DropdownMenuItem
-//                           onClick={() =>
-//                             askConfirmation("Edit this user?", () =>
-//                               openEditModal((currentPage - 1) * itemsPerPage + i)
-//                             )
-//                           }
-//                         >
+//                         <DropdownMenuItem onClick={() => askConfirmation("Edit this user?", () => openEditModal((currentPage - 1) * rowsPerPage + i))}>
 //                           <Edit className="w-4 h-4 mr-2" /> Edit
 //                         </DropdownMenuItem>
 //                         <DropdownMenuItem
-//                           className="text-red-500"
-//                           onClick={() =>
-//                             askConfirmation("Delete this user?", () =>
-//                               handleDelete((currentPage - 1) * itemsPerPage + i)
-//                             )
-//                           }
-//                         >
+//   className="text-red-500"
+//   onClick={() =>
+//     askConfirmation("Delete this user?", () =>
+//       handleDelete((currentPage - 1) * rowsPerPage + i)
+//     )
+//   }
+// >
+
 //                           <Trash2 className="w-4 h-4 mr-2" /> Delete
 //                         </DropdownMenuItem>
 //                       </DropdownMenuContent>
@@ -337,30 +320,25 @@
 //             </TableBody>
 //           </Table>
 
-//           {/* Pagination */}
-//           <div className="flex justify-between items-center mt-4">
-//             <Button
-//               variant="outline"
-//               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-//             >
-//               Previous
-//             </Button>
-//             <span>
-//               Page {currentPage} of {totalPages || 1}
-//             </span>
-//             <Button
-//               variant="outline"
-//               onClick={() =>
-//                 setCurrentPage((p) => Math.min(p + 1, totalPages))
-//               }
-//             >
-//               Next
-//             </Button>
+//           <div className="flex justify-between items-center mt-4 w-full">
+//             <div className="flex items-center gap-4">
+//               <Select value={rowsPerPage.toString()} onValueChange={(val) => { setRowsPerPage(Number(val)); setCurrentPage(1); }}>
+//                 <SelectTrigger className="w-24"><SelectValue /></SelectTrigger>
+//                 <SelectContent>
+//                   {[10,20,30,40,50].map((num) => (<SelectItem key={num} value={num.toString()}>{num}</SelectItem>))}
+//                 </SelectContent>
+//               </Select>
+//               <span className="text-sm">Page {currentPage} of {totalPages || 1}</span>
+//             </div>
+
+//             <div className="flex items-center gap-2">
+//               <Button variant="outline" onClick={() => setCurrentPage((p) => Math.max(p-1,1))} disabled={currentPage===1}>Previous</Button>
+//               <Button variant="outline" onClick={() => setCurrentPage((p) => Math.min(p+1,totalPages))} disabled={currentPage===totalPages || totalPages===0}>Next</Button>
+//             </div>
 //           </div>
 //         </div>
 //       )}
 
-//       {/* Confirmation Modal */}
 //       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
 //         <DialogContent>
 //           <DialogHeader>
@@ -368,18 +346,8 @@
 //             <DialogDescription>{confirmMessage}</DialogDescription>
 //           </DialogHeader>
 //           <DialogFooter>
-//             <Button variant="outline" onClick={() => setConfirmOpen(false)}>
-//               Cancel
-//             </Button>
-//             <Button
-//               variant="destructive"
-//               onClick={() => {
-//                 if (confirmAction) confirmAction()
-//                 setConfirmOpen(false)
-//               }}
-//             >
-//               Confirm
-//             </Button>
+//             <Button variant="outline" onClick={() => setConfirmOpen(false)}>Cancel</Button>
+//             <Button variant="destructive" onClick={() => { if(confirmAction) confirmAction(); setConfirmOpen(false); }}>Confirm</Button>
 //           </DialogFooter>
 //         </DialogContent>
 //       </Dialog>
@@ -400,10 +368,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 "use client"
 
 import React, { useState, useEffect } from "react"
-import { Plus, Edit, Trash2, MoreHorizontal, ChevronUp, ChevronDown, ListFilter, ChevronDown as ChevronDownIcon, ChevronsUpDownIcon } from "lucide-react"
+import { Edit, Trash2, MoreHorizontal, ChevronUp, ChevronDown, ListFilter, ChevronsUpDown } from "lucide-react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -466,15 +446,7 @@ export default function UserManagementPage() {
 
   const [search, setSearch] = useState("")
   const [roleFilter, setRoleFilter] = useState("")
-  const [openModal, setOpenModal] = useState(false)
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
-
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [role, setRole] = useState("admin")
-  const [status, setStatus] = useState("Active")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
 
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -504,47 +476,8 @@ export default function UserManagementPage() {
 
   const openEditModal = (index: number) => {
     const u = users[index]
-    setName(u.name)
-    setEmail(u.email)
-    setRole(u.role)
-    setStatus(u.status)
-    setPassword(u.password)
-    setConfirmPassword(u.password)
     setEditingIndex(index)
-    setOpenModal(true)
-  }
-
-
-  const handleAddOrUpdate = () => {
-    if (!name || !email || !role || !status || !password || !confirmPassword) {
-      toast.error("All fields are required!")
-      return
-    }
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match!")
-      return
-    }
-
-    const newUser: User = { name, email, role, status, password }
-
-    if (editingIndex !== null) {
-      const updated = [...users]
-      updated[editingIndex] = newUser
-      setUsers(updated)
-      toast.success("User updated!")
-    } else {
-      setUsers([...users, newUser])
-      toast.success("User added!")
-    }
-
-    setName("")
-    setEmail("")
-    setRole("admin")
-    setStatus("Active")
-    setPassword("")
-    setConfirmPassword("")
-    setEditingIndex(null)
-    setOpenModal(false)
+    // Pass data to AddUser sheet via props if needed
   }
 
   const handleDelete = (index: number) => {
@@ -586,28 +519,24 @@ export default function UserManagementPage() {
     currentPage * rowsPerPage
   )
 
-const renderSortIcon = (key: keyof User) => {
-  const isSorted = sortConfig?.key === key
-  const direction = sortConfig?.direction
+  const renderSortIcon = (key: keyof User) => {
+    const isSorted = sortConfig?.key === key
+    const direction = sortConfig?.direction
 
-  return (
-    <div className="ml-2 h-4 w-4 relative inline-block">
-      {/* Base unsorted icon */}
-      <ChevronsUpDownIcon
-        className={`h-4 w-4 ${isSorted ? "opacity-0" : "opacity-50"}`}
-      />
-
-      {/* Sorted icon */}
-      {isSorted && direction === "asc" && (
-        <ChevronUp className="h-4 w-4 absolute top-0 left-0" />
-      )}
-      {isSorted && direction === "desc" && (
-        <ChevronDown className="h-4 w-4 absolute top-0 left-0" />
-      )}
-    </div>
-  )
-}
-
+    return (
+      <div className="ml-2 h-4 w-4 relative inline-block">
+        <ChevronsUpDown
+          className={`h-4 w-4 ${isSorted ? "opacity-0" : "opacity-50"}`}
+        />
+        {isSorted && direction === "asc" && (
+          <ChevronUp className="h-4 w-4 absolute top-0 left-0" />
+        )}
+        {isSorted && direction === "desc" && (
+          <ChevronDown className="h-4 w-4 absolute top-0 left-0" />
+        )}
+      </div>
+    )
+  }
 
   const columns: ColumnDef<User>[] = [
     { accessorKey: "name", header: "Name" },
@@ -638,7 +567,7 @@ const renderSortIcon = (key: keyof User) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
-              {roleFilter ? roleFilter : "All Roles"} <ChevronsUpDownIcon className="ml-2 h-4 w-4" />
+              {roleFilter ? roleFilter : "All Roles"} <ChevronsUpDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -655,18 +584,19 @@ const renderSortIcon = (key: keyof User) => {
               <ListFilter className="ml-2 h-4 w-4" /> View
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table.getAllColumns().map((column: any) => (
-              <DropdownMenuCheckboxItem
-                key={column.id}
-                className="capitalize"
-                checked={column.getIsVisible()}
-                onCheckedChange={(value: any) => column.toggleVisibility(!!value)}
-              >
-                {column.id}
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
+         <DropdownMenuContent align="end">
+  {table.getAllColumns().map((column) => (
+    <DropdownMenuCheckboxItem
+      key={column.id}
+      className="capitalize"
+      checked={column.getIsVisible()} // column instance method
+      onCheckedChange={(value: boolean) => column.toggleVisibility(value)}
+    >
+      {column.id}
+    </DropdownMenuCheckboxItem>
+  ))}
+</DropdownMenuContent>
+
         </DropdownMenu>
 
         <AddUser />
@@ -683,10 +613,10 @@ const renderSortIcon = (key: keyof User) => {
                     className="cursor-pointer select-none"
                     onClick={() => handleSort(key as keyof User)}
                   >
-                  <div className="flex items-center gap-1">
-  {key.charAt(0).toUpperCase() + key.slice(1)}
-  {renderSortIcon(key as keyof User)}
-</div>
+                    <div className="flex items-center gap-1">
+                      {key.charAt(0).toUpperCase() + key.slice(1)}
+                      {renderSortIcon(key as keyof User)}
+                    </div>
                   </TableHead>
                 ))}
                 <TableHead>Actions</TableHead>
@@ -754,7 +684,6 @@ const renderSortIcon = (key: keyof User) => {
           {/* Pagination */}
           <div className="flex justify-between items-center mt-4 w-full">
             <div className="flex items-center gap-4">
-            
               <Select
                 value={rowsPerPage.toString()}
                 onValueChange={(val) => {
