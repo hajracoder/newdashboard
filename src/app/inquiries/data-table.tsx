@@ -47,17 +47,15 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+ 
    DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {  ChevronLeft, ChevronRight,ListFilter,ChevronsUpDown, Plus, Search, ChevronsUpDownIcon } from "lucide-react";
+import {  ChevronLeft, ChevronRight,ListFilter,Search, ChevronsUpDownIcon } from "lucide-react";
 import Link from "next/link";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 
 
 interface DataTableProps<TData, TValue> {
@@ -72,7 +70,7 @@ export function DataTable<TData extends { status?: string }, TValue>({
   const [globalFilter, setGlobalFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [pageSize, setPageSize] = useState(10);
-  const [selectedColumn, setSelectedColumn] = useState<string>("View");
+ 
 
   const table = useReactTable({
     data,
@@ -84,7 +82,7 @@ export function DataTable<TData extends { status?: string }, TValue>({
     onGlobalFilterChange: setGlobalFilter,
   });
 
-  const router = useRouter();
+
     const [date, setDate] = useState<Date | undefined>()
 
   return (
@@ -155,6 +153,7 @@ export function DataTable<TData extends { status?: string }, TValue>({
         </Button>
       </div>
     </div>
+
   </PopoverContent>
 </Popover>
 

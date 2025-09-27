@@ -44,38 +44,18 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+
+ 
+
    DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {  ChevronLeft, ChevronRight,ListFilter, Plus, Search } from "lucide-react";
+import {  ChevronLeft, ChevronRight,ListFilter, Search } from "lucide-react";
 import Link from "next/link";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 
-
-const tableColumns = [
-  "ID",
-  "Image",
-  "Map",
-  "Location Name",
-  "Inquiries",
-  "Reservations",
-  "Overall",
-  "Status",
-  "Min Capacity",
-  "Max Capacity",
-  "Address",
-  "Primary Phone",
-  "Secondary Phone",
-  "Attributes",
-  "Event Types",
-  "Actions",
-];
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -89,7 +69,7 @@ export function DataTable<TData extends { status?: string }, TValue>({
   const [globalFilter, setGlobalFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [pageSize, setPageSize] = useState(10);
-  const [selectedColumn, setSelectedColumn] = useState<string>("View");
+
 
   const table = useReactTable({
     data,
@@ -101,7 +81,7 @@ export function DataTable<TData extends { status?: string }, TValue>({
     onGlobalFilterChange: setGlobalFilter,
   });
 
-  const router = useRouter();
+ 
 
   return (
     <div className="space-y-4">

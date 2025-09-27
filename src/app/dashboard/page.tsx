@@ -297,7 +297,7 @@ import { Scroll } from 'lucide-react';
 
 
 
-import { UserPlus, Calendar as CalendarIcon, Eye, EyeOff, TriangleAlert, MessageSquare } from "lucide-react"
+import {  Calendar as CalendarIcon, Eye, EyeOff, TriangleAlert } from "lucide-react"
 import {
   LineChart,
   Line,

@@ -112,7 +112,7 @@
 
 "use client"
 
-import { Home, LayoutDashboard, User, MapPin, Shapes, Tags, Calendar, X } from "lucide-react"
+import { Home, LayoutDashboard, User, MapPin, Shapes, Tags, Calendar} from "lucide-react"
 import Link from "next/link"
 
 type SidebarProps = {

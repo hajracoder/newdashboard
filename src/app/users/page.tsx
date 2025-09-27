@@ -446,7 +446,7 @@ export default function UserManagementPage() {
 
   const [search, setSearch] = useState("")
   const [roleFilter, setRoleFilter] = useState("")
-  const [editingIndex, setEditingIndex] = useState<number | null>(null)
+ 
 
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -475,8 +475,7 @@ export default function UserManagementPage() {
   }, [users, mounted])
 
   const openEditModal = (index: number) => {
-    const u = users[index]
-    setEditingIndex(index)
+    (index)
     // Pass data to AddUser sheet via props if needed
   }
 

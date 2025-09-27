@@ -6,7 +6,7 @@ import { Scroll } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Edit, Trash, MapPin, ChevronsUpDown,MoreHorizontal } from "lucide-react"
+import { Edit, Trash, ChevronsUpDown,MoreHorizontal } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
