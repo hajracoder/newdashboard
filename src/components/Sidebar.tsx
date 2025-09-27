@@ -139,12 +139,7 @@ export default function Sidebar({ showSidebar, onCloseSidebar }: SidebarProps) {
           w-64 md:w-56 lg:w-64
         `}
       >
-        {/* Mobile Close Button */}
-        {/* <div className="h-16 flex items-center justify-between px-4 bg-gray-50 dark:bg-gray-900 md:hidden">
-          <button onClick={onCloseSidebar} className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800">
-            <X className="w-6 h-6" />
-          </button>
-        </div> */}
+       
 
         {/* Desktop Logo */}
         <div

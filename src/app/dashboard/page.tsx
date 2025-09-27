@@ -675,7 +675,7 @@ export default function Dashboard() {
 
         <div className="bg-white shadow rounded-xl p-4 md:p-6">
           <h2 className="text-lg flex gap-2 font-semibold mb-3">
-            <Scroll size={20} /> Latest Inquiries
+            <Scroll size={30} /> Latest Inquiries
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
