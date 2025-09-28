@@ -627,6 +627,10 @@ export default function AddVenueForm() {
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-2" align="start">
+                    <div className="relative">
+      <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+      <Input placeholder="Search status" className="pl-8" />
+    </div>
               <div className="max-h-48 overflow-y-auto rounded-md p-1">
                 {eventOptions.map((opt) => (
                   <label key={opt} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-100 rounded-md cursor-pointer">
@@ -647,6 +651,11 @@ export default function AddVenueForm() {
                   </label>
                 ))}
               </div>
+                <div className="flex justify-between mt-2">
+                <Button type="button" onClick={selectAllAttributes} className="text-sm underline">
+                  Select All
+                </Button>
+              </div>
             </PopoverContent>
           </Popover>
         </div>
@@ -662,7 +671,11 @@ export default function AddVenueForm() {
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-2" align="start">
-              <div className="max-h-48 overflow-y-auto rounded-md p-1">
+                         <div className="relative">
+      <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+      <Input placeholder="Search status" className="pl-8" />
+    </div>
+              <div className="max-h-30 overflow-y-scroll rounded-md p-1">
                 {attributeOptions.map((attr) => (
                   <label key={attr} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-100 rounded-md cursor-pointer">
                     <input

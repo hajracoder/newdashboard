@@ -154,7 +154,7 @@ export function DataTable<TData extends { status?: string }, TValue>({
   </div>
 </div>
       {/* Table */}
-      <div className="rounded-md border shadow-sm overflow-x-auto  max-w-[1200px]  mx-auto">
+       <div className="rounded-md border shadow-sm overflow-x-auto  max-w-[1200px]  mx-auto">
         <Table className="min-w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -205,7 +205,8 @@ export function DataTable<TData extends { status?: string }, TValue>({
               ))}
           </TableBody>
         </Table>
-      </div>
+      </div> 
+      
 
       {/* Pagination Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-3 mt-2">
