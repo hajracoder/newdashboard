@@ -233,7 +233,12 @@ export default function EventTypesPage() {
         <h1 className="text-2xl font-bold">Event Types</h1>
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+          className="flex items-center gap-2 px-4 py-2 bg-primary 
+    text-primary-foreground 
+    font-medium 
+  
+    hover:opacity-90 
+           rounded-lg "
         >
           <Plus className="w-4 h-4" /> Add Event
         </button>
@@ -282,7 +287,11 @@ export default function EventTypesPage() {
             />
             <button
               onClick={handleAddOrUpdate}
-              className="w-full p-2 border rounded-lg bg-orange-600 text-white hover:bg-orange-700"
+              className="w-full p-2 border  bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90 "
             >
               {editingIndex !== null ? "Update Event" : "Add Event"}
             </button>

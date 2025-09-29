@@ -308,7 +308,11 @@ export default function AttributesPage() {
         <h1 className="text-2xl font-bold">Attributes</h1>
         <button
           onClick={() => setOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+          className="flex items-center gap-2 px-4 py-2  bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90 "
         >
           <Plus className="w-4 h-4" /> Add Attribute
         </button>
@@ -417,7 +421,11 @@ export default function AttributesPage() {
            
             <button
               onClick={handleAddOrUpdate}
-              className="px-4 py-2 rounded-lg bg-orange-600 text-white hover:bg-orange-700"
+              className="px-4 py-2  bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90 "
             >
               {editingIndex !== null ? "Update Attribute" : "Add Attribute"}
             </button>

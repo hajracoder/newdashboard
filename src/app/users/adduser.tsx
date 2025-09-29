@@ -620,7 +620,11 @@ function AddUser({ onAdd }: AddUserProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="bg-orange-500/95 text-white hover:bg-orange-400">
+        <Button className=" bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90 ">
           + Add User
         </Button>
       </SheetTrigger>

@@ -147,7 +147,11 @@ export function DataTable<TData extends { status?: string }, TValue>({
       <div className="flex justify-center m-2 border-t">
         <Button 
           onClick={() => console.log("Selected Date:", date)} 
-          className="bg-orange-600 hover:bg-orange-700 m-4 rounded-xl p-4 w-full"
+          className=" bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90  m-4  p-4 w-full"
         >
           Apply
         </Button>
@@ -187,7 +191,11 @@ export function DataTable<TData extends { status?: string }, TValue>({
 
         {/* Add Location Button */}
         <Link href="/inquiries/add" className="w-full sm:w-auto">
-          <button className="px-3 py-2 bg-orange-700 text-white rounded hover:bg-orange-800 w-full sm:w-auto">
+          <button className="px-3 py-2 bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90  w-full sm:w-auto">
             Add Inquiry
           </button>
         </Link>

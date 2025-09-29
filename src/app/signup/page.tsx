@@ -62,7 +62,11 @@ export default function Signup() {
           />
           <button
             onClick={handleSignup}
-            className="w-full py-3 bg-orange-400 text-white rounded-xl hover:bg-orange-600 transition-all font-semibold"
+            className="w-full py-3  bg-primary 
+    text-primary-foreground 
+    font-medium 
+    
+    hover:opacity-90  rounded-xl hover:bg-orange-600 transition-all "
           >
             Sign Up
           </button>
@@ -70,7 +74,11 @@ export default function Signup() {
 
         <p className="mt-6 text-sm text-center text-gray-600 dark:text-gray-300">
           Already have an account?{" "}
-          <Link href="/login" className="text-orange-400 font-semibold hover:underline">
+          <Link href="/login" className=" bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90 hover:underline">
             Login
           </Link>
         </p>

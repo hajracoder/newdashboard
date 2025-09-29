@@ -707,7 +707,11 @@ export default function AddVenueForm() {
 
       {/* Submit Button */}
       <div className="flex justify-center m-3">
-        <Button className="bg-orange-600 hover:bg-orange-700 m-4 p-5.5 ">
+        <Button className=" bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90  m-4 p-5.5 ">
           Add Location
         </Button>
       </div>

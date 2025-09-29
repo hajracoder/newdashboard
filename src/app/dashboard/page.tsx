@@ -381,9 +381,23 @@ function AddUser() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="bg-orange-500/95 p-6 text-white hover:bg-orange-400">
-          + Add User
-        </Button>
+ <Button
+  className="
+    bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90 
+    px-4 py-3         /* default (mobile) */
+    sm:px-5 sm:py-3.5 /* tablet */
+    md:px-6 md:py-4   /* laptop */
+    lg:px-8 lg:py-5   /* desktop */
+  "
+>
+  + Add New User
+</Button>
+
+
       </SheetTrigger>
 
       <SheetContent className="px-5 w-full max-w-2xl overflow-y-auto">

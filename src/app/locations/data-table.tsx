@@ -147,7 +147,11 @@ export function DataTable<TData extends { status?: string }, TValue>({
 
     {/* Add Location Button */}
     <Link href="/locations/add" className="w-full sm:w-auto">
-      <button className="px-3 py-2 bg-orange-700 text-white rounded hover:bg-orange-800 w-full sm:w-auto">
+      <button className="px-3 py-2     bg-primary 
+    text-primary-foreground 
+    font-medium 
+    rounded-lg 
+    hover:opacity-90  w-full sm:w-auto">
         Add Location
       </button>
     </Link>
